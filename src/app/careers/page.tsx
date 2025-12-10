@@ -1,215 +1,141 @@
 'use client';
 
-import { SectionTitle } from "@/components/ui/section-title";
-import { useState } from "react";
+import Image from "next/image";
+import { MainFooter } from "@/components/main-footer";
+
+const opportunities = [
+    {
+        id: "thinking",
+        icon: "/icon-thinking.png",
+        title: "Forward-Thinking Practice",
+        description: "We invest heavily in legal technology, data-driven research, and horizon scanning so that our lawyers stay ahead of regulatory change. You will advise clients on how to make regulatory change work for them, not against them, and you will help shape the firm's strategic positioning in an evolving legal market.",
+    },
+    {
+        id: "progression",
+        icon: "/icon-progression.png",
+        title: "Merit-Based Progression",
+        description: "Clear KPIs, mid-year feedback loops, and transparent promotion criteria mean your career depends on performance, not politics. We reward originators who bring in new work, technical specialists who become thought leaders, and project managers who deliver complex mandates with precision, performance bonuses, and public recognition as firm-wide role models.",
+    },
+    {
+        id: "culture",
+        icon: "/icon-culture.png",
+        title: "Collaborative Culture",
+        description: "Your day-to-day, you will work in cross-practice teams where partners keep open doors and junior lawyers are encouraged to ask questions. We share knowledge through internal CLE sessions, turn complex challenges into shared victories and ensure no one is left to solve problems alone.",
+    },
+    {
+        id: "flexibility",
+        icon: "/icon-flexibility.png",
+        title: "People-First Flexibility",
+        description: "Hybrid schedules, wellness stipends, and firm-sponsored community time off help you manage the demands of everyday life. Our inclusive meritocracy links and promotes on capability and character alone, diversely of background and thought, and we expect clients and colleagues alike to treat everyone with respect.",
+    },
+    {
+        id: "learning",
+        icon: "/icon-learning.png",
+        title: "Continuous Learning",
+        description: "Every lawyer receives an annual CPD budget, access to in-house masterclasses, and scholarships for international conferences or postgraduate study. You can expect overseas secondments with global partner firms, shadowing opportunities with senior counsel, and a culture that celebrates curiosity and ensures no one is left to solve problems alone.",
+    },
+];
 
 export default function CareersPage() {
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        position: '',
-        experience: '',
-        coverLetter: '',
-    });
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Handle form submission
-        console.log('Form submitted:', formData);
-        alert('Application submitted successfully! We will review your application and contact you soon.');
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    };
-
     return (
-        <div className="py-20 bg-white min-h-screen">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <SectionTitle title="Join Our Team" subtitle="Careers & Internships" centered />
+        <div className="min-h-screen relative overflow-hidden">
+            {/* Background Image - Same as About page */}
+            <div className="absolute inset-0 z-0">
+                <Image
+                    src="/city.png"
+                    alt="City Background"
+                    fill
+                    className="object-cover"
+                    priority
+                />
+                {/* Green Overlay */}
+                <div className="absolute inset-0 bg-[#0a2608]/90" />
+            </div>
 
-                <p className="max-w-3xl mx-auto text-center text-gray-600 mb-16 text-lg">
-                    We're always looking for talented individuals to join our team. Explore opportunities to grow your legal career with us.
-                </p>
+            {/* All Content */}
+            <div className="relative z-10 min-h-screen">
+                {/* Hero Section */}
+                <section className="pt-32 pb-16 text-white">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
+                            Careers at Dej-Udom & Associates
+                        </h1>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                    {/* Why Join Us */}
-                    <div>
-                        <h3 className="text-2xl font-serif font-bold text-primary mb-6">
-                            Why Work With Us?
-                        </h3>
-                        <div className="space-y-4 mb-8">
-                            {[
-                                "Collaborative and supportive work environment",
-                                "Competitive compensation and benefits",
-                                "Professional development opportunities",
-                                "Mentorship from experienced attorneys",
-                                "Work-life balance initiatives",
-                                "Diverse and inclusive culture",
-                            ].map((benefit, i) => (
-                                <div key={i} className="flex items-start gap-3">
-                                    <div className="h-6 w-6 rounded-full bg-secondary/20 flex items-center justify-center shrink-0 mt-0.5">
-                                        <span className="text-secondary text-sm">✓</span>
+                        <p className="text-base text-gray-200 max-w-5xl leading-relaxed mb-4">
+                            <span className="font-semibold">Shape the Law. Grow Your Career.</span>
+                        </p>
+
+                        <p className="text-base text-gray-200 max-w-5xl leading-relaxed">
+                            From precedent-setting cross-border deals to high-stakes disputes, Dej-Udom & Associates sits at the heart of Southeast Asia's legal market. Join us and you will work side-by-side with leading practitioners, advise global brands, and help drive legal innovation across the region.
+                        </p>
+                    </div>
+                </section>
+
+                {/* Opportunities Section */}
+                <section className="pb-16">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-12">
+                            Opportunities with Dej-Udom & Associates
+                        </h2>
+
+                        <div className="space-y-12">
+                            {opportunities.map((opp, index) => {
+                                const isEven = index % 2 === 0;
+
+                                return (
+                                    <div
+                                        key={opp.id}
+                                        className={`flex items-start gap-8 ${isEven ? 'flex-row' : 'flex-row-reverse'}`}
+                                    >
+                                        {/* Icon */}
+                                        <div className="flex-shrink-0">
+                                            <div className="w-20 h-20 relative">
+                                                <Image
+                                                    src={opp.icon}
+                                                    alt={opp.title}
+                                                    fill
+                                                    className="object-contain"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Content */}
+                                        <div className={`flex-1 ${isEven ? 'text-left' : 'text-right ml-auto'}`}>
+                                            <h3 className="text-xl font-bold text-secondary mb-3">
+                                                {opp.title}
+                                            </h3>
+                                            <p className={`text-gray-200 text-sm leading-relaxed max-w-2xl ${isEven ? '' : 'ml-auto'}`}>
+                                                {opp.description}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <span className="text-gray-700">{benefit}</span>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="bg-muted p-6 rounded-lg">
-                            <h4 className="font-bold text-primary mb-3">Current Openings</h4>
-                            <ul className="space-y-2 text-gray-700">
-                                <li>• Associate Attorney - Corporate Law</li>
-                                <li>• Paralegal - Family Law</li>
-                                <li>• Legal Assistant</li>
-                                <li>• Summer Internship Program</li>
-                            </ul>
+                                );
+                            })}
                         </div>
                     </div>
+                </section>
 
-                    {/* Application Form */}
-                    <div className="bg-gray-50 p-8 rounded-lg">
-                        <h3 className="text-2xl font-serif font-bold text-primary mb-6">
-                            Apply Now
-                        </h3>
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
-                                        First Name *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="firstName"
-                                        name="firstName"
-                                        required
-                                        value={formData.firstName}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary outline-none"
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
-                                        Last Name *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="lastName"
-                                        name="lastName"
-                                        required
-                                        value={formData.lastName}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary outline-none"
-                                    />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Email Address *
-                                </label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    required
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary outline-none"
-                                />
-                            </div>
-
-                            <div>
-                                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Phone Number *
-                                </label>
-                                <input
-                                    type="tel"
-                                    id="phone"
-                                    name="phone"
-                                    required
-                                    value={formData.phone}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary outline-none"
-                                />
-                            </div>
-
-                            <div>
-                                <label htmlFor="position" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Position Applying For *
-                                </label>
-                                <select
-                                    id="position"
-                                    name="position"
-                                    required
-                                    value={formData.position}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary outline-none"
-                                >
-                                    <option value="">Select a position</option>
-                                    <option value="attorney">Associate Attorney</option>
-                                    <option value="paralegal">Paralegal</option>
-                                    <option value="assistant">Legal Assistant</option>
-                                    <option value="intern">Internship</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label htmlFor="experience" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Years of Experience
-                                </label>
-                                <input
-                                    type="text"
-                                    id="experience"
-                                    name="experience"
-                                    value={formData.experience}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary outline-none"
-                                    placeholder="e.g., 3 years"
-                                />
-                            </div>
-
-                            <div>
-                                <label htmlFor="coverLetter" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Cover Letter / Why do you want to join us? *
-                                </label>
-                                <textarea
-                                    id="coverLetter"
-                                    name="coverLetter"
-                                    required
-                                    rows={4}
-                                    value={formData.coverLetter}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary outline-none"
-                                    placeholder="Tell us about yourself and why you'd be a great fit..."
-                                ></textarea>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Resume / CV *
-                                </label>
-                                <input
-                                    type="file"
-                                    accept=".pdf,.doc,.docx"
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary outline-none"
-                                />
-                                <p className="text-xs text-gray-500 mt-1">PDF, DOC, or DOCX (Max 5MB)</p>
-                            </div>
-
-                            <button
-                                type="submit"
-                                className="w-full bg-secondary text-primary font-bold py-3 px-6 rounded hover:bg-primary hover:text-white transition-all duration-300"
+                {/* CTA Section */}
+                <section className="pb-20">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-lg px-8 py-6 flex items-center justify-between">
+                            <h2 className="text-xl md:text-2xl font-serif font-bold text-white">
+                                Interested in Understanding Our Recruitment Process?
+                            </h2>
+                            <a
+                                href="#"
+                                className="flex items-center gap-2 px-6 py-3 bg-secondary hover:bg-secondary/90 text-[#0a2608] font-semibold rounded transition-all whitespace-nowrap"
                             >
-                                Submit Application
-                            </button>
-                        </form>
+                                Read More
+                                <span>→</span>
+                            </a>
+                        </div>
                     </div>
+                </section>
+
+                {/* Custom Footer */}
+                <div className="relative z-20">
+                    <MainFooter />
                 </div>
             </div>
         </div>

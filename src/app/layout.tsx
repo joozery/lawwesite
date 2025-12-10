@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Playfair_Display, Noto_Sans_Thai } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -12,6 +12,12 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
 });
 
+const notoSansThai = Noto_Sans_Thai({
+  variable: "--font-noto-sans-thai",
+  subsets: ["thai", "latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
+
 export const metadata: Metadata = {
   title: "Legal Partners | Professional Law Firm",
   description: "Excellence in legal representation.",
@@ -20,7 +26,7 @@ export const metadata: Metadata = {
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { CookieBanner } from '@/components/cookie-banner';
-import '@/i18n';
+import { I18nProvider } from '@/components/i18n-provider';
 
 export default function RootLayout({
   children,
@@ -30,14 +36,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${playfair.variable} antialiased font-sans flex flex-col min-h-screen`}
+        className={`${inter.variable} ${playfair.variable} ${notoSansThai.variable} antialiased font-sans flex flex-col min-h-screen`}
       >
-        <Navbar />
-        <main className="flex-grow">
+        <I18nProvider>
+          <Navbar />
           {children}
-        </main>
-        <Footer />
-        <CookieBanner />
+          <CookieBanner />
+        </I18nProvider>
       </body>
     </html>
   );

@@ -1,85 +1,163 @@
-import { SectionTitle } from "@/components/ui/section-title";
-import { CheckCircle2, History, Target, Users } from "lucide-react";
+'use client';
+
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { MainFooter } from "@/components/main-footer";
 
 export default function AboutPage() {
     return (
-        <div className="py-20 bg-gray-50 min-h-screen">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <SectionTitle title="About Legal Partners" subtitle="Our Story & Mission" centered />
+        <div className="min-h-screen relative overflow-hidden">
+                {/* Background Image - Absolute for this page only */}
+                <div className="absolute inset-0 z-0">
+                    <Image
+                        src="/city.png"
+                        alt="City Background"
+                        fill
+                        className="object-cover"
+                        priority
+                    />
+                    {/* Green Overlay */}
+                    <div className="absolute inset-0 bg-[#0a2608]/90" />
+                </div>
 
-                {/* Introduction */}
-                <div className="bg-white rounded-lg shadow-sm p-8 md:p-12 mb-12">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                {/* All Content */}
+                <div className="relative z-10 min-h-screen">
+                {/* Hero Section */}
+                <section className="pt-32 pb-16 text-white">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
+                        About Dej-Udom & Associates
+                    </h1>
+                    
+                    <p className="text-lg mb-6 max-w-4xl leading-relaxed">
+                        Commercial insight, local authority, and uncompromising service make us the full-service law firm of choice in Thailand and beyond.
+                    </p>
+                    
+                    <p className="text-base text-gray-200 max-w-4xl leading-relaxed">
+                        Founded in Bangkok in 1986 by Professor Dej-Udom Krairit, Dej-Udom & Associates has spent nearly four decades helping businesses, investors, and individuals navigate complex legal landscapes across Southeast Asia and the wider world. From our independent base in Thailand, we deliver integrated, cross-border advice that aligns with your commercial objectives and safeguards your long-term success.
+                    </p>
+                    </div>
+                </section>
+
+            {/* Our Commitment Section */}
+            <section className="py-20 text-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 className="text-4xl md:text-5xl font-serif font-bold text-secondary mb-12">
+                        Our Commitment
+                    </h2>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-white">
                         <div>
-                            <h3 className="text-2xl font-serif font-bold text-primary mb-4">
-                                A Tradition of Excellence Since 1995
-                            </h3>
-                            <p className="text-gray-600 mb-6 leading-relaxed">
-                                For over 25 years, Legal Partners has been a pillar of the legal community, providing unwavering support and superior representation to individuals and businesses alike. Founded on the principles of integrity, diligence, and justice, we have built a reputation for achieving results when it matters most.
-                            </p>
-                            <p className="text-gray-600 leading-relaxed">
-                                Our collaborative approach ensures that every client receives the benefit of our collective experience, resulting in innovative strategies and comprehensive legal solutions.
+                            <h3 className="text-xl font-bold text-secondary mb-4">Client Focus</h3>
+                            <p className="text-sm leading-relaxed text-gray-300">
+                                We invest the time to understand your industry, strategy, and operational realities, enabling us to provide business-driven solutions that add measurable value.
                             </p>
                         </div>
-                        <div className="bg-muted h-80 rounded flex items-center justify-center relative overflow-hidden group">
-                            {/* Placeholder for About Image */}
-                            <div className="text-gray-400 text-center">
-                                <span className="block text-4xl mb-2">🏛️</span>
-                                Our Office Building
+                        
+                        <div>
+                            <h3 className="text-xl font-bold text-secondary mb-4">Excellence in Service</h3>
+                            <p className="text-sm leading-relaxed text-gray-300">
+                                Our multidisciplinary team is recognized for responsiveness, clarity, and integrity. We deliver practical, actionable advice whether resolving a single issue or stewarding your most significant transactions.
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <h3 className="text-xl font-bold text-secondary mb-4">Local Strength, Global Perspective</h3>
+                            <p className="text-sm leading-relaxed text-gray-300">
+                                With deep roots in Thailand and strategic alliances on six continents, we combine nuanced local knowledge with an international outlook, ensuring seamless support for inbound and outbound matters alike.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Areas of Practice Section */}
+            <section className="py-20 text-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-12">
+                        Areas of Practice
+                    </h2>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="border border-white/30 p-8 rounded hover:border-secondary transition-colors">
+                            <h3 className="text-xl font-bold text-white mb-4">Incorporation & Corporate Matters</h3>
+                            <p className="text-sm text-gray-300 mb-4 leading-relaxed">
+                                Strategic advice on corporate structuring, regulatory compliance, mergers and acquisitions, joint ventures, and commercial contracts.
+                            </p>
+                            <Link href="#" className="inline-flex items-center text-secondary hover:text-secondary/80 text-sm">
+                                Read More <ArrowRight className="ml-2 h-4 w-4" />
+                            </Link>
+                        </div>
+                        
+                        <div className="border border-white/30 p-8 rounded hover:border-secondary transition-colors">
+                            <h3 className="text-xl font-bold text-white mb-4">Litigation, Mediation & ADR</h3>
+                            <p className="text-sm text-gray-300 mb-4 leading-relaxed">
+                                Robust advocacy in complex commercial disputes, domestic and international arbitration, and all tiers of Thai courts.
+                            </p>
+                            <Link href="#" className="inline-flex items-center text-secondary hover:text-secondary/80 text-sm">
+                                Read More <ArrowRight className="ml-2 h-4 w-4" />
+                            </Link>
+                        </div>
+                        
+                        <div className="border border-white/30 p-8 rounded hover:border-secondary transition-colors">
+                            <h3 className="text-xl font-bold text-white mb-4">Intellectual Property</h3>
+                            <p className="text-sm text-gray-300 mb-4 leading-relaxed">
+                                End to end protection and enforcement of trademarks, patents, designs, copyrights, and trade secrets.
+                            </p>
+                            <Link href="#" className="inline-flex items-center text-secondary hover:text-secondary/80 text-sm">
+                                Read More <ArrowRight className="ml-2 h-4 w-4" />
+                            </Link>
+                        </div>
+                        
+                        <div className="grid grid-rows-2 gap-6">
+                            <div className="border border-white/30 p-6 rounded hover:border-secondary transition-colors">
+                                <h3 className="text-lg font-bold text-white mb-2">Taxation</h3>
+                                <p className="text-sm text-gray-300 mb-3 leading-relaxed">
+                                    Holistic advice on corporate and personal tax, VAT, customs and excise details, and tax-efficient structuring.
+                                </p>
+                                <Link href="#" className="inline-flex items-center text-secondary hover:text-secondary/80 text-sm">
+                                    Read More <ArrowRight className="ml-2 h-4 w-4" />
+                                </Link>
                             </div>
-                            <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/5 transition-colors" />
+                            
+                            <div className="border border-white/30 p-6 rounded hover:border-secondary transition-colors">
+                                <h3 className="text-lg font-bold text-white mb-2">Immigration, Relocation & Work Permit</h3>
+                                <p className="text-sm text-gray-300 mb-3 leading-relaxed">
+                                    Practical family support for visas, work permits, business licenses, and long-term residency applications.
+                                </p>
+                                <Link href="#" className="inline-flex items-center text-secondary hover:text-secondary/80 text-sm">
+                                    Read More <ArrowRight className="ml-2 h-4 w-4" />
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </section>
 
-                {/* Mission & Values */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                    {[
-                        {
-                            icon: Target,
-                            title: "Our Mission",
-                            text: "To provide accessible, high-quality legal services that empower our clients to navigate complex legal challenges."
-                        },
-                        {
-                            icon: Users,
-                            title: "Our Values",
-                            text: "Integrity, Transparency, and Client-Centricity. We put your needs first and communicate openly at every step."
-                        },
-                        {
-                            icon: History,
-                            title: "Our Vision",
-                            text: "To be the leading law firm recognized for our commitment to justice and our positive impact on the community."
-                        }
-                    ].map((item, i) => (
-                        <div key={i} className="bg-white p-8 rounded shadow-sm border-t-4 border-secondary">
-                            <item.icon className="h-10 w-10 text-primary mb-4" />
-                            <h4 className="text-xl font-serif font-bold text-primary mb-3">{item.title}</h4>
-                            <p className="text-gray-600 text-sm leading-relaxed">{item.text}</p>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Why Us List */}
-                <div className="bg-primary text-white p-12 rounded-lg">
-                    <div className="max-w-3xl mx-auto text-center">
-                        <h3 className="text-2xl font-serif font-bold mb-8">Why Clients Trust Us</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-                            {[
-                                "Available 24/7 for urgent matters",
-                                "Transparent fee structure",
-                                "Initial consultation is free",
-                                "Top-rated by regional bar associations",
-                                "Personalized attention to every case",
-                                "Multilingual support staff"
-                            ].map((benefit, i) => (
-                                <div key={i} className="flex items-center gap-3">
-                                    <CheckCircle2 className="h-5 w-5 text-secondary shrink-0" />
-                                    <span>{benefit}</span>
-                                </div>
-                            ))}
-                        </div>
+            {/* Mission Section */}
+            <section className="py-20 text-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 className="text-4xl md:text-5xl font-serif font-bold text-secondary mb-8">
+                        Mission
+                    </h2>
+                    
+                    <div className="text-white space-y-6 max-w-5xl">
+                        <p className="text-base leading-relaxed">
+                            To be the trusted legal partner of choice for multinational, high-growth enterprises and Thai businesses, providing tailored counsel that empowers our clients to thrive in complex and competitive markets.
+                        </p>
+                        
+                        <p className="text-base leading-relaxed">
+                            Whether you are a global corporation, an emerging enterprise, or a private individual, Dej-Udom & Associates stands ready to protect your interests with professionalism, creativity, and unwavering commitment to excellence.
+                        </p>
                     </div>
                 </div>
+            </section>
+
+            {/* Custom Footer for About Page Only */}
+            <div className="relative z-20">
+                <MainFooter />
+            </div>
             </div>
         </div>
     );
