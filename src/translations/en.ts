@@ -13,7 +13,8 @@ const en = {
         searchPlaceholder: 'Search lawyers, practice areas, insights, and more',
     },
     stats: {
-        title: 'Independent Thai legal expertise honed over',
+        title1: 'Independent Thai legal',
+        title2: 'expertise honed over',
         titleHighlight: 'nearly four decades',
         readMore: 'Read More About Us',
         clients: 'Clients Trust Us',
@@ -91,6 +92,167 @@ const en = {
         ipDept: 'Intellectual Property Department',
         immigrationDept: 'Immigration Department',
     },
+    about: {
+        title: 'About Dej-Udom & Associates',
+        hero: {
+            intro: 'Commercial insight, local authority, and uncompromising service make us the full-service law firm of choice in Thailand and beyond.',
+            description: 'Founded in Bangkok in 1986 by Professor Dej-Udom Krairit, Dej-Udom & Associates has spent nearly four decades helping businesses, investors, and individuals navigate complex legal landscapes across Southeast Asia and the wider world. From our independent base in Thailand, we deliver integrated, cross-border advice that aligns with your commercial objectives and safeguards your long-term success.',
+        },
+        commitment: {
+            title: 'Our Commitment',
+            clientFocus: {
+                title: 'Client Focus',
+                desc: 'We invest the time to understand your industry, strategy, and operational realities, enabling us to provide precise, business-driven solutions that add measurable value.',
+            },
+            excellence: {
+                title: 'Excellence in Service',
+                desc: 'Our multidisciplinary team is recognized for responsiveness, clarity, and integrity. We deliver practical, actionable advice whether resolving a single issue or stewarding your most significant transactions.',
+            },
+            global: {
+                title: 'Local Strength, Global Perspective.',
+                desc: 'With deep roots in Thailand and strategic alliances on six continents, we combine nuanced local knowledge with an international outlook, ensuring seamless support for inbound and outbound matters alike.',
+            },
+        },
+        practiceAreas: {
+            title: 'Areas of Practice',
+            incorporation: {
+                title: 'Incorporation & Corporate Matters',
+                desc: 'Strategic advice on corporate structuring, regulatory compliance, mergers and acquisitions, joint ventures, and commercial contracts.',
+            },
+            litigation: {
+                title: 'Litigation, Mediation & ADR',
+                desc: 'Robust advocacy in complex commercial disputes, domestic and international arbitration, and all tiers of Thai courts.',
+            },
+            ip: {
+                title: 'Intellectual Property',
+                desc: 'End to end protection and enforcement of trademarks, patents, designs, copyrights, and trade secrets.',
+            },
+            taxation: {
+                title: 'Taxation',
+                desc: 'Holistic advice on corporate and personal tax, VAT, customs and excise duties, and tax-efficient structuring.',
+            },
+            immigration: {
+                title: 'Immigration, Relocation & Work Permit',
+                desc: 'Practical, timely support for visas, work permits, workforce mobility, and Thai labour law compliance.',
+            },
+            readMore: 'Read More',
+        },
+        mission: {
+            title: 'Mission',
+            paragraph1: 'To be the trusted legal partner of choice for multinationals, high-growth enterprises, and Thai businesses, providing tailored counsel that empowers our clients to innovate, expand, and thrive in competitive markets.',
+            paragraph2: 'Whether you are a global corporation, an emerging enterprise, or a private individual, Dej-Udom & Associates stands ready to protect your interests with professionalism, creativity, and unwavering commitment to excellence.',
+        },
+    },
+    admin: {
+        sidebar: {
+            overview: 'OVERVIEW',
+            contentManagement: 'CONTENT MANAGEMENT',
+            operations: 'OPERATIONS',
+            system: 'SYSTEM',
+            dashboard: 'Dashboard',
+            teamMembers: 'Team Members',
+            booksArticles: 'Books & Articles',
+            insightsNews: 'Insights / News',
+            practiceAreas: 'Practice Areas',
+            careers: 'Careers',
+            contactMessages: 'Contact Messages',
+            adminUsers: 'Admin Users',
+        },
+        header: {
+            profile: 'Profile',
+            settings: 'Settings',
+            logout: 'Logout',
+        },
+        dashboard: {
+            title: 'Team Members',
+            subtitle: 'Manage your content and team members',
+            totalTeam: 'Total Team',
+            booksPublished: 'Books Published',
+            insights: 'Insights',
+            practiceAreas: 'Practice Areas',
+            thisMonth: 'this month',
+            totalDownloads: 'total downloads',
+            totalViews: 'total views',
+            allActive: 'All active',
+        },
+        users: {
+            title: 'Admin Users',
+            subtitle: 'Manage system access and permissions',
+            addNew: 'Add New User',
+            search: 'Search users...',
+            table: {
+                name: 'Name',
+                email: 'Email',
+                role: 'Role',
+                createdAt: 'Created At',
+                actions: 'Actions',
+                noUsers: 'No users found.',
+                loading: 'Loading users...',
+            },
+            modal: {
+                createTitle: 'Create New User',
+                createDesc: 'Add a new administrator to the system.',
+                editTitle: 'Edit User',
+                editDesc: "Update the user's details below.",
+                fullName: 'Full Name',
+                email: 'Email Address',
+                password: 'Password',
+                passwordPlaceholder: 'Leave blank to keep unchanged',
+                save: 'Save Changes',
+                create: 'Create User',
+                cancel: 'Cancel',
+            },
+            delete: {
+                title: 'Are you sure?',
+                desc: 'This action cannot be undone. This will permanently delete the user',
+                confirm: 'Delete User',
+                deleting: 'Deleting...',
+            }
+        }
+    },
+    contact: {
+        title: "Contact Us",
+        subtitle: "Your first point of contact for expert legal guidance in Thailand. Select a department below or email us directly and we'll connect you with the right professional.",
+        preferDirect: "Prefer direct contact?",
+        emailUs: "Email us at",
+        departments: {
+            ceo: {
+                title: "Chief Executive Officer",
+                subtitle: "Office of the CEO",
+                button: "Email Office"
+            },
+            deputy: {
+                title: "Deputy Managing Partner",
+                subtitle: "Executive Office",
+                button: "Email Deputy"
+            },
+            litigation: {
+                title: "Litigation, Mediation & ADR",
+                subtitle: "Dispute Resolution",
+                button: "Contact Litigation Team"
+            },
+            corporate: {
+                title: "Incorporation & Corporate Matters",
+                subtitle: "Corporate Services",
+                button: "Contact Corporate Team"
+            },
+            immigration: {
+                title: "Immigration, Relocation & Work Permit",
+                subtitle: "Immigration Services",
+                button: "Ask Immigration Team"
+            },
+            taxation: {
+                title: "Taxation",
+                subtitle: "Corporate & Indirect Tax",
+                button: "Ask a Tax Advisor"
+            },
+            ip: {
+                title: "Intellectual Property",
+                subtitle: "Patent & Trademark",
+                button: "Talk to IP Specialist"
+            }
+        }
+    }
 };
 
 export default en;

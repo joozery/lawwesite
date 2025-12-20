@@ -2,10 +2,12 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export function Navbar() {
+    const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
     const [langMenuOpen, setLangMenuOpen] = useState(false);
     const [aboutMenuOpen, setAboutMenuOpen] = useState(false);
@@ -15,6 +17,11 @@ export function Navbar() {
     const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
     const [mobileCareersOpen, setMobileCareersOpen] = useState(false);
     const { t, i18n } = useTranslation();
+
+    // Hide Navbar on Admin pages
+    if (pathname?.startsWith('/admin')) {
+        return null;
+    }
 
     const navigation = [
         { name: t('nav.home'), href: '/' },
@@ -96,13 +103,13 @@ export function Navbar() {
                                     </Link>
 
                                     {getMenuOpen(item.submenuKey!) && (
-                                        <div className="absolute top-full left-0 pt-1 z-50">
-                                            <div className="bg-black/90 backdrop-blur-md border border-white/10 rounded-md shadow-lg py-1 w-64">
+                                        <div className="absolute top-full left-0 pt-2 z-50">
+                                            <div className="bg-[#111] border border-white/5 rounded-lg shadow-2xl py-2 w-64 overflow-hidden">
                                                 {getSubmenuData(item.submenuKey!).map((subItem) => (
                                                     <Link
                                                         key={subItem.name}
                                                         href={subItem.href}
-                                                        className="block px-4 py-2 text-xs font-semibold hover:bg-white/10 hover:text-secondary transition-colors tracking-wider"
+                                                        className="block px-6 py-3 text-[11px] font-bold text-white hover:bg-[#222] hover:text-[#f9b400] transition-colors tracking-widest uppercase border-b border-white/5 last:border-0"
                                                     >
                                                         {subItem.name}
                                                     </Link>

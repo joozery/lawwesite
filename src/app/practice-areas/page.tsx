@@ -3,265 +3,300 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MainFooter } from "@/components/main-footer";
+import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
+// Import i18n to match Contact page pattern, although Provider handles it
+// Removing import '@/lib/i18n' to avoid errors as seen previously
 
 const services = [
     {
         id: "corporate",
+        titleKey: "departments.corporate.title", // Using existing keys structure or creating new
+        // For this specific design request, I'll use hardcoded text first to MATCH THE DESIGN EXACTLY, 
+        // as translation keys might simpler than the detailed description in the design.
+        // Actually, let's use the text from the design image.
         title: "Incorporation & Corporate Matters",
-        description: "Entity setup, shareholder agreements, capital structuring, and company secretarial support from launch through growth.",
+        description: "Entity setup, shareholder agreements, capital structuring, and company secretarial support from launch to growth.",
         image: "/service-corporate.png",
-        href: "/practice-areas/corporate",
+        href: "/practice-areas/corporate"
     },
     {
         id: "litigation",
         title: "Litigation, Mediation & ADR",
         description: "Commercial disputes, regulatory investigations, and alternative dispute resolution handled by experienced litigators.",
         image: "/service-litigation.png",
-        href: "/practice-areas/litigation",
+        href: "/practice-areas/litigation"
     },
     {
         id: "immigration",
         title: "Immigration, Relocation & Work Permit",
         description: "Visas, work permits, BOI, and cross-border relocation with clear timelines and documentation checklists.",
         image: "/service-immigration.png",
-        href: "/practice-areas/immigration",
+        href: "/practice-areas/immigration"
     },
     {
         id: "taxation",
         title: "Taxation",
         description: "Transaction tax, transfer pricing coordination, and dispute resolution aligned with business objectives.",
         image: "/service-taxation.png",
-        href: "/practice-areas/taxation",
+        href: "/practice-areas/taxation"
     },
     {
         id: "ip",
         title: "Intellectual Property",
         description: "Trademarks, patents (via agents), copyright, and brand protection including enforcement and portfolio strategy.",
         image: "/service-ip.png",
-        href: "/practice-areas/ip",
+        href: "/practice-areas/ip"
     },
 ];
 
 export default function PracticeAreasPage() {
+    const { t } = useTranslation();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) return null;
+
     return (
-        <div className="min-h-screen relative overflow-hidden">
-            {/* Background Image - Same as About page */}
+        <div className="min-h-screen relative overflow-hidden bg-[#0a2608]">
+            {/* Background Image - Using a dark city background similar to design */}
             <div className="absolute inset-0 z-0">
                 <Image
-                    src="/city.png"
-                    alt="City Background"
+                    src="/588618834.jpg"
+                    alt="Background"
                     fill
-                    className="object-cover"
+                    className="object-cover opacity-60"
                     priority
                 />
-                {/* Green Overlay */}
-                <div className="absolute inset-0 bg-[#0a2608]/90" />
+                {/* Green Overlay Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-b from-[#0a2608]/90 via-[#0a2608]/80 to-[#0a2608]/90" />
             </div>
 
             {/* All Content */}
-            <div className="relative z-10 min-h-screen">
-                {/* Hero Section */}
-                <section className="pt-32 pb-16 text-white">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
+            <div className="relative z-10 min-h-screen flex flex-col">
+                <div className="flex-grow pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+
+                    {/* Header Section */}
+                    <div className="mb-16">
+                        <h1 className="text-[29px] font-serif font-bold text-white mb-6">
                             Legal Services
                         </h1>
-
-                        <p className="text-base text-gray-200 max-w-5xl leading-relaxed">
-                            Dej-Udom & Associates Attorneys-at-Law delivers partner-led, business-focused counsel to Thai and international clients from our base in Bangkok's Silom financial district. Drawing on more than four decades of courtroom and boardroom experience, we provide seamless advice across Incorporation & Corporate Matters, Immigration, Relocation & Work Permit, Intellectual Property, Litigation, Mediation & ADR and Taxation. Our multidisciplinary teams combine local insight with international perspective, allowing you to pursue opportunity and manage risk with confidence.
+                        <p className="text-gray-200 text-[11px] leading-relaxed tracking-wide max-w-5xl">
+                            Dej-Udom & Associates Attorneys-at-Law delivers partner-led, business-focused counsel to Thai and international clients from our base in Bangkok's Silom financial district. Drawing on more than four decades of courtroom and boardroom experience, we provide seamless advice across: Incorporation & Corporate Matters, Immigration, Relocation & Work Permit, Intellectual Property, Litigation, Mediation & ADR and Taxation. Our multidisciplinary teams combine local insight with international perspective, allowing you to pursue opportunity and manage risk with confidence.
                         </p>
                     </div>
-                </section>
 
-                {/* Services Grid */}
-                <section className="pb-20">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    {/* Services Grid */}
+                    <div className="flex flex-col gap-8">
+                        {/* Top Row: 3 items */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {services.map((service) => (
+                            {services.slice(0, 3).map((service) => (
                                 <Link
                                     key={service.id}
                                     href={service.href}
-                                    className="group bg-[#0d2b0a] border-2 border-white/30 rounded-lg overflow-hidden hover:border-secondary transition-all"
+                                    className="group relative flex flex-col border-2 border-white rounded-[20px] overflow-hidden hover:border-secondary transition-colors duration-300 p-1.5"
                                 >
-                                    {/* Image */}
-                                    <div className="relative h-56 overflow-hidden">
-                                        <Image
-                                            src={service.image}
-                                            alt={service.title}
-                                            fill
-                                            className="object-cover group-hover:scale-105 transition-transform duration-300"
-                                        />
+                                    {/* Image Section - Top Half */}
+                                    <div className="relative h-56 w-full">
+                                        <div className="relative w-full h-full rounded-[14px] overflow-hidden">
+                                            <Image
+                                                src={service.image}
+                                                alt={service.title}
+                                                fill
+                                                className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                                            />
+                                        </div>
                                     </div>
 
-                                    {/* Content */}
-                                    <div className="p-6">
-                                        <h3 className="text-xl font-serif font-bold text-white mb-3 group-hover:text-secondary transition-colors">
+                                    {/* Content Section - Bottom Half */}
+                                    <div className="flex flex-col flex-1 px-4 py-5 bg-transparent">
+                                        <h3 className="text-[17px] font-bold text-white mb-3 leading-tight min-h-[56px] flex items-start">
                                             {service.title}
                                         </h3>
-                                        <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                                        <p className="text-gray-200 text-[10px] leading-[1.6] mb-6 flex-1 opacity-90">
                                             {service.description}
                                         </p>
-                                        <div className="flex items-center gap-2 text-secondary text-sm font-semibold">
-                                            View More
-                                            <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                            </svg>
+
+                                        <div className="flex justify-end mt-auto">
+                                            <span className="text-[#f9b400] text-sm font-bold hover:underline bg-transparent">
+                                                View More
+                                            </span>
+                                        </div>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+
+                        {/* Bottom Row: 2 items centered */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto w-full lg:w-2/3">
+                            {services.slice(3, 5).map((service) => (
+                                <Link
+                                    key={service.id}
+                                    href={service.href}
+                                    className="group relative flex flex-col border-2 border-white rounded-[20px] overflow-hidden hover:border-secondary transition-colors duration-300 p-1.5"
+                                >
+                                    {/* Image Section - Top Half */}
+                                    <div className="relative h-56 w-full">
+                                        <div className="relative w-full h-full rounded-[14px] overflow-hidden">
+                                            <Image
+                                                src={service.image}
+                                                alt={service.title}
+                                                fill
+                                                className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Content Section - Bottom Half */}
+                                    <div className="flex flex-col flex-1 px-4 py-5 bg-transparent">
+                                        <h3 className="text-[22px] font-bold text-white mb-3 leading-tight min-h-[32px] flex items-start">
+                                            {service.title}
+                                        </h3>
+                                        <p className="text-gray-200 text-[13px] leading-[1.6] mb-6 flex-1 opacity-90">
+                                            {service.description}
+                                        </p>
+
+                                        <div className="flex justify-end mt-auto">
+                                            <span className="text-[#f9b400] text-sm font-bold hover:underline bg-transparent">
+                                                View More
+                                            </span>
                                         </div>
                                     </div>
                                 </Link>
                             ))}
                         </div>
                     </div>
-                </section>
 
-                {/* Why Clients Choose Us */}
-                <section className="pb-16">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-12">
+                    {/* Why Clients Choose Us Section */}
+                    <div className="mt-20 mb-16">
+                        <h2 className="text-2xl font-serif font-bold text-white mb-8 border-l-4 border-[#f9b400] pl-4">
                             Why Clients Choose Us
                         </h2>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
                             <div>
-                                <h3 className="text-xl font-bold text-secondary mb-3">
-                                    Depth of Expertise
-                                </h3>
-                                <p className="text-gray-300 text-sm leading-relaxed italic">
+                                <h3 className="text-[#f9b400] font-bold text-lg mb-1">Depth of Expertise</h3>
+                                <p className="text-white font-serif italic text-sm opacity-90">
                                     Senior partner and sector specialists involved from strategy to execution.
                                 </p>
                             </div>
-
                             <div>
-                                <h3 className="text-xl font-bold text-secondary mb-3">
-                                    Regional Reach
-                                </h3>
-                                <p className="text-gray-300 text-sm leading-relaxed italic">
-                                    Established alliances across ASEAN with reliable, cross-border support.
+                                <h3 className="text-[#f9b400] font-bold text-lg mb-1">Regional Reach</h3>
+                                <p className="text-white font-serif italic text-sm opacity-90">
+                                    Established alliances across ASEAN with reliable cross-border support.
                                 </p>
                             </div>
-
                             <div>
-                                <h3 className="text-xl font-bold text-secondary mb-3">
-                                    Commercial Clarity
-                                </h3>
-                                <p className="text-gray-300 text-sm leading-relaxed italic">
+                                <h3 className="text-[#f9b400] font-bold text-lg mb-1">Commercial Clarity</h3>
+                                <p className="text-white font-serif italic text-sm opacity-90">
                                     Advice framed around your business model with clear, practical options.
                                 </p>
                             </div>
-
                             <div>
-                                <h3 className="text-xl font-bold text-secondary mb-3">
-                                    Agile Delivery
-                                </h3>
-                                <p className="text-gray-300 text-sm leading-relaxed italic">
+                                <h3 className="text-[#f9b400] font-bold text-lg mb-1">Agile Delivery</h3>
+                                <p className="text-white font-serif italic text-sm opacity-90">
                                     Lean teams that move quickly with secure, confidential matter handling.
                                 </p>
                             </div>
                         </div>
                     </div>
-                </section>
 
-                {/* Contact Form Section */}
-                <section className="pb-20">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-12">
+                    {/* Speak to our Attorney Form */}
+                    <div className="mb-12">
+                        <h2 className="text-xl font-bold text-white mb-6">
                             Speak to our Attorney
                         </h2>
-
-                        <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* Full Name */}
-                            <div>
-                                <label htmlFor="fullName" className="block text-white text-sm font-semibold mb-2">
-                                    Full Name
-                                </label>
-                                <input
-                                    type="text"
-                                    id="fullName"
-                                    name="fullName"
-                                    className="w-full px-4 py-3 bg-transparent border-2 border-white/30 rounded text-white placeholder-gray-400 focus:outline-none focus:border-secondary transition-colors"
-                                    placeholder="Enter your full name"
-                                />
-                            </div>
-
-                            {/* Email Address */}
-                            <div>
-                                <label htmlFor="email" className="block text-white text-sm font-semibold mb-2">
-                                    Email Address
-                                </label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    className="w-full px-4 py-3 bg-transparent border-2 border-white/30 rounded text-white placeholder-gray-400 focus:outline-none focus:border-secondary transition-colors"
-                                    placeholder="Enter your email"
-                                />
-                            </div>
-
-                            {/* Inquiry Type */}
-                            <div className="md:col-span-2">
-                                <label htmlFor="inquiryType" className="block text-white text-sm font-semibold mb-2">
-                                    Inquiry Type
-                                </label>
-                                <select
-                                    id="inquiryType"
-                                    name="inquiryType"
-                                    className="w-full px-4 py-3 bg-transparent border-2 border-white/30 rounded text-gray-400 focus:outline-none focus:border-secondary transition-colors appearance-none cursor-pointer"
-                                    style={{
-                                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-                                        backgroundRepeat: 'no-repeat',
-                                        backgroundPosition: 'right 1rem center',
-                                        backgroundSize: '1.5rem'
-                                    }}
-                                >
-                                    <option value="">Please select the type of inquiry you have</option>
-                                    <option value="corporate">Incorporation & Corporate Matters</option>
-                                    <option value="immigration">Immigration, Relocation & Work Permit</option>
-                                    <option value="ip">Intellectual Property</option>
-                                    <option value="litigation">Litigation, Mediation & ADR</option>
-                                    <option value="taxation">Taxation</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-
-                            {/* Message */}
-                            <div className="md:col-span-2">
-                                <label htmlFor="message" className="block text-white text-sm font-semibold mb-2">
-                                    Describe Your Matter (No Confidential Information)
-                                </label>
-                                <textarea
-                                    id="message"
-                                    name="message"
-                                    rows={6}
-                                    className="w-full px-4 py-3 bg-transparent border-2 border-white/30 rounded text-white placeholder-gray-400 focus:outline-none focus:border-secondary transition-colors resize-none"
-                                    placeholder="Please describe your inquiry..."
-                                ></textarea>
-                            </div>
-
-                            {/* Terms and Submit */}
-                            <div className="md:col-span-2 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                                <div className="flex items-start gap-3">
+                        <form className="space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {/* Full Name */}
+                                <div className="space-y-2">
+                                    <label className="text-white font-bold text-sm">
+                                        Full Name <span className="text-red-500">*</span>
+                                    </label>
                                     <input
-                                        type="checkbox"
-                                        id="terms"
-                                        name="terms"
-                                        className="mt-1 w-4 h-4 border-2 border-white/30 rounded bg-transparent focus:ring-secondary"
+                                        type="text"
+                                        className="w-full bg-transparent border border-gray-500 rounded px-4 py-2.5 text-white focus:outline-none focus:border-[#f9b400] transition-colors"
                                     />
-                                    <label htmlFor="terms" className="text-white text-xs leading-relaxed">
-                                        I agree to the <span className="font-semibold">Terms & Conditions</span> and consent to Dej-Udom & Associates Ltd. collecting, using, and disclosing my personal data in accordance with the <span className="font-semibold">Privacy Policy</span>.
+                                </div>
+
+                                {/* Email Address */}
+                                <div className="space-y-2">
+                                    <label className="text-white font-bold text-sm">
+                                        Email Address <span className="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="email"
+                                        className="w-full bg-transparent border border-gray-500 rounded px-4 py-2.5 text-white focus:outline-none focus:border-[#f9b400] transition-colors"
+                                    />
+                                </div>
+
+                                {/* Inquiry Type */}
+                                <div className="space-y-2">
+                                    <label className="text-white font-bold text-sm">
+                                        Inquiry Type <span className="text-red-500">*</span>
+                                    </label>
+                                    <div className="relative">
+                                        <select className="w-full bg-transparent border border-gray-500 rounded px-4 py-2.5 text-gray-300 focus:outline-none focus:border-[#f9b400] transition-colors appearance-none cursor-pointer">
+                                            <option value="" disabled selected>Please select the type of inquiry you have</option>
+                                            <option value="corporate">Incorporation & Corporate Matters</option>
+                                            <option value="litigation">Litigation, Mediation & ADR</option>
+                                            <option value="immigration">Immigration, Relocation & Work Permit</option>
+                                            <option value="taxation">Taxation</option>
+                                            <option value="ip">Intellectual Property</option>
+                                        </select>
+                                        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Describe Your Matter */}
+                                <div className="space-y-2">
+                                    <label className="text-white font-bold text-sm">
+                                        Describe Your Matter (No Confidential Information) <span className="text-red-500">*</span>
+                                    </label>
+                                    <textarea
+                                        rows={4}
+                                        className="w-full bg-transparent border border-gray-500 rounded px-4 py-2.5 text-white focus:outline-none focus:border-[#f9b400] transition-colors resize-none"
+                                    ></textarea>
+                                </div>
+                            </div>
+
+                            {/* Terms & Submit */}
+                            <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-4">
+                                <div className="flex items-start gap-3 max-w-2xl">
+                                    <div className="relative flex items-center">
+                                        <input
+                                            type="checkbox"
+                                            id="terms"
+                                            className="peer h-5 w-5 cursor-pointer appearance-none border border-gray-500 bg-transparent checked:border-[#f9b400] checked:bg-[#f9b400] transition-all"
+                                        />
+                                        <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none opacity-0 peer-checked:opacity-100 text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </div>
+                                    <label htmlFor="terms" className="text-xs text-white leading-relaxed cursor-pointer select-none">
+                                        I agree to the <span className="font-bold">Terms & Conditions</span> and consent to Dej-Udom & Associates Ltd. collecting, using, and disclosing my personal data in accordance with the <span className="font-bold">Privacy Policy</span>.
                                     </label>
                                 </div>
+
                                 <button
                                     type="submit"
-                                    className="px-8 py-3 bg-white/10 hover:bg-secondary text-white hover:text-[#0a2608] border-2 border-white/30 hover:border-secondary rounded-full font-semibold transition-all"
+                                    className="px-8 py-2.5 bg-white/20 hover:bg-white/30 border border-white/30 text-white font-bold text-sm rounded-full transition-all whitespace-nowrap shadow-lg backdrop-blur-sm"
                                 >
                                     Submit Inquiry
                                 </button>
                             </div>
                         </form>
                     </div>
-                </section>
 
-                {/* Custom Footer */}
+                </div>
+
+                {/* Footer */}
                 <div className="relative z-20">
                     <MainFooter />
                 </div>

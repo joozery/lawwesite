@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display, Noto_Sans_Thai } from "next/font/google";
+import { Poppins, Noto_Sans_Thai } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
-});
-
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 const notoSansThai = Noto_Sans_Thai({
@@ -28,6 +24,8 @@ import { Footer } from '@/components/footer';
 import { CookieBanner } from '@/components/cookie-banner';
 import { I18nProvider } from '@/components/i18n-provider';
 
+import AuthProvider from '@/components/auth-provider';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -36,13 +34,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${playfair.variable} ${notoSansThai.variable} antialiased font-sans flex flex-col min-h-screen`}
+        className={`${poppins.variable} ${notoSansThai.variable} antialiased font-sans flex flex-col min-h-screen`}
       >
-        <I18nProvider>
-          <Navbar />
-          {children}
-          <CookieBanner />
-        </I18nProvider>
+        <AuthProvider>
+          <I18nProvider>
+            <Navbar />
+            {children}
+            <CookieBanner />
+          </I18nProvider>
+        </AuthProvider>
       </body>
     </html>
   );

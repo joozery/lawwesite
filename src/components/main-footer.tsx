@@ -8,35 +8,35 @@ export function MainFooter() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                     {/* Contact */}
                     <div>
-                        <h3 className="text-lg font-bold mb-4">Contact</h3>
-                        <p className="text-sm text-gray-300 leading-relaxed">
-                            We advise clients from our Bangkok headquarters and through our partner network across Southeast Asia and the wider world.
+                        <h3 className="text-[16px] font-bold mb-3">Contact</h3>
+                        <p className="text-[12px] text-gray-300 leading-relaxed mb-4">
+                            We advise clients from our Bangkok headquarters and through partner desks across Southeast Asia.
                         </p>
-                        <Link href="/contact" className="inline-flex items-center text-secondary hover:text-secondary/80 text-sm mt-4">
+                        <Link href="/contact" className="inline-flex items-center text-[#f9b400] hover:text-[#f9b400]/80 text-[12px] font-semibold">
                             Contact Us <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                     </div>
 
                     {/* Career */}
                     <div>
-                        <h3 className="text-lg font-bold mb-4">Career</h3>
-                        <p className="text-sm text-gray-300 leading-relaxed">
-                            We are always looking for outstanding lawyers, business services specialists, and law graduates eager to join our growing team.
+                        <h3 className="text-[16px] font-bold mb-3">Careers</h3>
+                        <p className="text-[12px] text-gray-300 leading-relaxed mb-4">
+                            We are always looking for outstanding lawyers, business-services specialists, and interns to strengthen our growing team.
                         </p>
-                        <Link href="/careers" className="inline-flex items-center text-secondary hover:text-secondary/80 text-sm mt-4">
+                        <Link href="/careers" className="inline-flex items-center text-[#f9b400] hover:text-[#f9b400]/80 text-[12px] font-semibold">
                             Join Us <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                     </div>
 
                     {/* Professional Networks */}
                     <div>
-                        <h3 className="text-lg font-bold mb-4">Professional Networks</h3>
+                        <h3 className="text-[16px] font-bold mb-3">Professional Networks</h3>
                         <div className="space-y-2">
-                            <Link href="#" className="block text-sm text-secondary hover:text-secondary/80">
-                                International Bar Association (IBA)
+                            <Link href="#" className="block text-[12px] text-[#f9b400] hover:text-[#f9b400]/80">
+                                International Lawyers Network (ILN)
                             </Link>
-                            <Link href="#" className="block text-sm text-secondary hover:text-secondary/80">
-                                ASEAN Australia Alliance (AAA)
+                            <Link href="#" className="block text-[12px] text-[#f9b400] hover:text-[#f9b400]/80">
+                                ASEAN Attorneys Alliance (AAA)
                             </Link>
                         </div>
                     </div>
@@ -44,13 +44,13 @@ export function MainFooter() {
 
                 {/* Bottom Bar */}
                 <div className="border-t border-white/10 pt-6">
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-3 text-sm">
+                    <div className="flex flex-col md:flex-row justify-between items-center gap-3 text-[12px]">
                         <p className="text-gray-400">
                             © 2025 Dej-Udom & Associates Ltd. All Rights Reserved.
                         </p>
                         <div className="flex gap-6">
                             <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">
-                                Terms of Use
+                                Term of Use
                             </Link>
                             <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">
                                 Privacy Policy

@@ -96,7 +96,7 @@ export default function AdminLoginPage() {
                     <div className="mt-6 text-center text-sm text-gray-500">
                         <p>Default credentials:</p>
                         <p className="font-mono text-xs mt-1">
-                            admin@legalpartners.com / admin123
+                            admin@lawwesite.com / password123
                         </p>
                     </div>
                 </div>

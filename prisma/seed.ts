@@ -1,56 +1,42 @@
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
+import { PrismaClient } from '../src/generated/prisma/client'
+import bcrypt from 'bcryptjs'
+import 'dotenv/config'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 async function main() {
-    // Create admin user
-    const hashedPassword = await bcrypt.hash('admin123', 10);
+    const email = 'admin@lawwesite.com'
+    const password = 'password123'
+    const name = 'Super Admin'
 
-    await prisma.user.upsert({
-        where: { email: 'admin@legalpartners.com' },
-        update: {},
-        create: {
-            email: 'admin@legalpartners.com',
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const existingUser = await prisma.user.findUnique({
+        where: { email },
+    })
+
+    if (existingUser) {
+        console.log('Admin user already exists.')
+        return
+    }
+
+    const user = await prisma.user.create({
+        data: {
+            email,
             password: hashedPassword,
-            name: 'Admin User',
+            name,
             role: 'admin',
         },
-    });
+    })
 
-    // Create sample news
-    await prisma.news.createMany({
-        data: [
-            {
-                title: 'New Corporate Law Updates for 2024',
-                slug: 'corporate-law-updates-2024',
-                excerpt: 'Important changes in corporate regulations that businesses need to know.',
-                content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Detailed analysis of the new corporate law changes...',
-                category: 'Corporate Law',
-                published: true,
-                publishedAt: new Date(),
-            },
-            {
-                title: 'Understanding Family Law Mediation',
-                slug: 'family-law-mediation',
-                excerpt: 'How mediation can help resolve family disputes effectively.',
-                content: 'Mediation is an effective alternative to litigation in family law cases...',
-                category: 'Family Law',
-                published: true,
-                publishedAt: new Date(),
-            },
-        ],
-        skipDuplicates: true,
-    });
-
-    console.log('Database seeded successfully!');
+    console.log(`Created admin user: ${user.email} with password: ${password}`)
 }
 
 main()
     .catch((e) => {
-        console.error(e);
-        process.exit(1);
+        console.error(e)
+        process.exit(1)
     })
     .finally(async () => {
-        await prisma.$disconnect();
-    });
+        await prisma.$disconnect()
+    })

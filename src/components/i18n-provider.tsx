@@ -39,6 +39,38 @@ i18nInstance
   });
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setIsReady(true);
+
+    // Update document language and font class on language change
+    const updateLanguage = (lng: string) => {
+      if (typeof document !== 'undefined') {
+        document.documentElement.lang = lng;
+
+        // Update font class based on language
+        if (lng === 'th') {
+          document.documentElement.classList.add('font-thai');
+          document.documentElement.classList.remove('font-en');
+        } else {
+          document.documentElement.classList.add('font-en');
+          document.documentElement.classList.remove('font-thai');
+        }
+      }
+    };
+
+    // Set initial language
+    updateLanguage(i18nInstance.language);
+
+    // Listen for language changes
+    i18nInstance.on('languageChanged', updateLanguage);
+
+    return () => {
+      i18nInstance.off('languageChanged', updateLanguage);
+    };
+  }, []);
+
   return <I18nextProvider i18n={i18nInstance}>{children}</I18nextProvider>;
 }
 
