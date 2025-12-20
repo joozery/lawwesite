@@ -3,7 +3,8 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  // Remove output custom path to ensure compatibility with standard node_modules
+  // output   = "../src/generated/prisma" 
 }
 
 datasource db {
@@ -41,30 +42,49 @@ model Insight {
 }
 
 model PracticeArea {
-  id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  subtitle    String?
-  description String   @db.LongText // Short description for the card
-  details     String   @db.LongText // Full details/overview for the detail page
-  features    String?  @db.LongText // Stored as JSON string or separated list
-  image       String?  // Main image/Icon
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  subtitle     String?
+  description  String?  @db.LongText
+  
+  // New Design Fields
+  quote        String?  @db.Text
+  contactEmail String?
+  overview     String?  @db.LongText // Full content (can store HTML or plain text)
+  experience   String?  @db.LongText // JSON string of array
+  
+  features     String?  @db.LongText
+  details      String?  @db.LongText
+  
+  image        String?
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Explicit Many-to-Many is better for some databases, but implicit works for MySQL too.
+  // Using Implicit Many-to-Many
+  attorneys    Attorney[]
 }
 
-model TeamMember {
-  id          String   @id @default(cuid())
-  name        String
-  role        String
-  bio         String
-  email       String
-  phone       String?
-  image       String?
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model Attorney {
+  id            String   @id @default(cuid())
+  name          String
+  slug          String   @unique
+  role          String
+  image         String?
+  email         String?
+  phone         String?
+  linkedin      String?
+  
+  profile       String?  @db.LongText
+  contributions String?  @db.LongText // JSON string array
+  
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  practiceAreas PracticeArea[]
 }
 
 model Ebook {

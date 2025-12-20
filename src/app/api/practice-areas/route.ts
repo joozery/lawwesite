@@ -7,6 +7,9 @@ export async function GET() {
     try {
         const practiceAreas = await prisma.practiceArea.findMany({
             orderBy: { order: 'asc' },
+            include: {
+                attorneys: true
+            }
         });
         return NextResponse.json(practiceAreas);
     } catch (error) {
@@ -15,24 +18,30 @@ export async function GET() {
     }
 }
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
     try {
-        const body = await request.json();
-        const { title, slug, subtitle, description, details, features, image } = body;
+        const body = await req.json();
+        const { attorneyIDs, features, overview, experience, ...rest } = body;
 
-        const newPracticeArea = await prisma.practiceArea.create({
+        // Prepare attorney connection
+        const attorneyConnect = attorneyIDs && Array.isArray(attorneyIDs)
+            ? attorneyIDs.map((id: string) => ({ id }))
+            : [];
+
+        const practiceArea = await prisma.practiceArea.create({
             data: {
-                title,
-                slug,
-                subtitle,
-                description,
-                details,
-                features: JSON.stringify(features), // Store as JSON string
-                image,
+                ...rest,
+                features: JSON.stringify(features),
+                overview: typeof overview === 'string' ? overview : JSON.stringify(overview),
+                experience: typeof experience === 'string' ? experience : JSON.stringify(experience),
+                attorneys: {
+                    connect: attorneyConnect
+                }
             },
+            include: { attorneys: true }
         });
 
-        return NextResponse.json(newPracticeArea);
+        return NextResponse.json(practiceArea, { status: 201 });
     } catch (error) {
         console.error('Failed to create practice area:', error);
         return NextResponse.json({ error: 'Failed to create practice area' }, { status: 500 });

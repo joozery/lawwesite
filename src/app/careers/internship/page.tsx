@@ -9,8 +9,8 @@ export default function InternshipPage() {
             {/* Background Image - Same as About page */}
             <div className="absolute inset-0 z-0">
                 <Image
-                    src="/city.png"
-                    alt="City Background"
+                    src="/588618834.jpg"
+                    alt="Background"
                     fill
                     className="object-cover"
                     priority

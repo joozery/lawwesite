@@ -10,7 +10,7 @@ import {
     Trash2,
     Loader2,
     ExternalLink,
-    CheckCircle
+    Users
 } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -43,21 +43,34 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { FileUpload } from "@/components/admin/file-upload";
 
-// Define Interface
+// Define Interfaces
+interface Attorney {
+    id: string;
+    name: string;
+    role: string;
+}
+
 interface PracticeArea {
     id: string;
     title: string;
     slug: string;
     subtitle?: string;
     description: string;
-    details: string;
-    features?: string;
+
+    // New Fields
+    quote?: string;
+    contactEmail?: string;
+    overview?: string;
+    experience?: string; // JSON Array string
+
     image?: string;
     order: number;
+    attorneys: Attorney[]; // Connected attorneys
 }
 
 export default function AdminPracticeAreasPage() {
     const [practiceAreas, setPracticeAreas] = useState<PracticeArea[]>([]);
+    const [allAttorneys, setAllAttorneys] = useState<Attorney[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -71,11 +84,14 @@ export default function AdminPracticeAreasPage() {
         title: '',
         slug: '',
         subtitle: '',
-        description: '',
-        details: '',
-        features: '', // Will handle as string and split
+        description: '', // Short desc
+        quote: '',
+        contactEmail: '',
+        overview: '', // Full Text
+        experience: '', // Text area for JSON array
         image: '',
-        order: 0
+        order: 0,
+        attorneyIDs: [] as string[]
     };
     const [formData, setFormData] = useState(initialFormState);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -95,8 +111,21 @@ export default function AdminPracticeAreasPage() {
         }
     };
 
+    const fetchAttorneys = async () => {
+        try {
+            const res = await fetch('/api/attorneys');
+            if (res.ok) {
+                const data = await res.json();
+                setAllAttorneys(data);
+            }
+        } catch (error) {
+            console.error('Failed to fetch attorneys', error);
+        }
+    }
+
     useEffect(() => {
         fetchPracticeAreas();
+        fetchAttorneys();
     }, []);
 
     // Handlers
@@ -109,30 +138,31 @@ export default function AdminPracticeAreasPage() {
     const handleOpenEdit = (area: PracticeArea) => {
         setCurrentArea(area);
 
-        // Handle features which might be stored as JSON string of array
-        let featuresString = '';
-        if (area.features) {
-            try {
-                const parsed = JSON.parse(area.features);
-                if (Array.isArray(parsed)) {
-                    featuresString = parsed.join('\n'); // Display as line-separated
-                } else {
-                    featuresString = area.features;
-                }
-            } catch (e) {
-                featuresString = area.features;
+        // Handle features/experience
+        let experienceString = area.experience || '';
+        try {
+            // If it's pure JSON array, try to format nicely? 
+            // Or simple strategy: Keep it as is if it's string.
+            const parsed = JSON.parse(experienceString);
+            if (Array.isArray(parsed)) {
+                experienceString = JSON.stringify(parsed, null, 2);
             }
+        } catch (e) {
+            // It's raw text
         }
 
         setFormData({
             title: area.title,
             slug: area.slug,
             subtitle: area.subtitle || '',
-            description: area.description,
-            details: area.details,
-            features: featuresString,
+            description: area.description || '',
+            quote: area.quote || '',
+            contactEmail: area.contactEmail || '',
+            overview: area.overview || '',
+            experience: experienceString,
             image: area.image || '',
-            order: area.order
+            order: area.order,
+            attorneyIDs: area.attorneys ? area.attorneys.map(a => a.id) : []
         });
         setIsModalOpen(true);
     }
@@ -150,12 +180,24 @@ export default function AdminPracticeAreasPage() {
             const url = currentArea ? `/api/practice-areas/${currentArea.id}` : '/api/practice-areas';
             const method = currentArea ? 'PATCH' : 'POST';
 
-            // Convert features string to array
-            const featuresArray = formData.features.split('\n').map(s => s.trim()).filter(Boolean);
+            // process experience to be valid JSON if possible, or just string array
+            let experiencePayload = formData.experience;
+            try {
+                // Try parse
+                JSON.parse(formData.experience);
+            } catch (e) {
+                // If not valid JSON, treat as newline separated list -> convert to JSON array
+                const list = formData.experience.split('\n').map(l => l.trim()).filter(Boolean);
+                experiencePayload = JSON.stringify(list);
+            }
+
+            // Similar for overview if desired, but user design showed 2 cols. 
+            // Let's assume overview is simple text paragraphs (separated by double newline) for now
+            // or we store it directly.
 
             const payload = {
                 ...formData,
-                features: featuresArray
+                experience: experiencePayload
             };
 
             const res = await fetch(url, {
@@ -194,6 +236,17 @@ export default function AdminPracticeAreasPage() {
         }
     };
 
+    const toggleAttorney = (attorneyId: string) => {
+        setFormData(prev => {
+            const current = prev.attorneyIDs;
+            if (current.includes(attorneyId)) {
+                return { ...prev, attorneyIDs: current.filter(id => id !== attorneyId) };
+            } else {
+                return { ...prev, attorneyIDs: [...current, attorneyId] };
+            }
+        });
+    };
+
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const title = e.target.value;
         setFormData(prev => ({
@@ -215,7 +268,7 @@ export default function AdminPracticeAreasPage() {
                         <Briefcase className="w-8 h-8 text-blue-600" />
                         Practice Areas
                     </h1>
-                    <p className="text-gray-500 mt-1 ml-11">Manage legal services and practice areas</p>
+                    <p className="text-gray-500 mt-1 ml-11">Manage legal services and primary contacts</p>
                 </div>
                 <Button onClick={handleOpenAdd} className="bg-[#111] hover:bg-black gap-2 shadow-lg hover:shadow-xl transition-all">
                     <Plus className="h-4 w-4" />
@@ -241,8 +294,9 @@ export default function AdminPracticeAreasPage() {
                         <Table>
                             <TableHeader className="bg-gray-50/50">
                                 <TableRow>
-                                    <TableHead className="w-[80px]">Icon/Img</TableHead>
+                                    <TableHead className="w-[80px]">Icon</TableHead>
                                     <TableHead className="font-semibold">Title</TableHead>
+                                    <TableHead className="font-semibold">Team</TableHead>
                                     <TableHead className="font-semibold">Description</TableHead>
                                     <TableHead className="text-right font-semibold">Actions</TableHead>
                                 </TableRow>
@@ -250,13 +304,13 @@ export default function AdminPracticeAreasPage() {
                             <TableBody>
                                 {loading ? (
                                     <TableRow>
-                                        <TableCell colSpan={4} className="h-24 text-center text-gray-500">
+                                        <TableCell colSpan={5} className="h-24 text-center text-gray-500">
                                             Loading...
                                         </TableCell>
                                     </TableRow>
                                 ) : filteredAreas.length === 0 ? (
                                     <TableRow>
-                                        <TableCell colSpan={4} className="h-32 text-center text-gray-500">
+                                        <TableCell colSpan={5} className="h-32 text-center text-gray-500">
                                             No practice areas found.
                                         </TableCell>
                                     </TableRow>
@@ -265,7 +319,7 @@ export default function AdminPracticeAreasPage() {
                                         <TableRow key={item.id} className="hover:bg-gray-50/50 transition-colors">
                                             <TableCell>
                                                 {item.image ? (
-                                                    <img src={item.image} alt="Cover" className="h-10 w-10 object-cover rounded shadow-sm border border-gray-200" />
+                                                    <img src={item.image} alt="Icon" className="h-10 w-10 object-cover rounded shadow-sm border border-gray-200" />
                                                 ) : (
                                                     <div className="h-10 w-10 bg-gray-100 rounded flex items-center justify-center text-gray-300">
                                                         <Briefcase className="w-5 h-5" />
@@ -276,7 +330,20 @@ export default function AdminPracticeAreasPage() {
                                                 <div>{item.title}</div>
                                                 <div className="text-xs text-blue-500">/{item.slug}</div>
                                             </TableCell>
-                                            <TableCell className="text-gray-600 text-sm max-w-[300px] truncate">
+                                            <TableCell className="text-gray-600 text-sm">
+                                                <div className="flex -space-x-2 overflow-hidden">
+                                                    {item.attorneys && item.attorneys.length > 0 ? (
+                                                        item.attorneys.map((att: any) => (
+                                                            <div key={att.id} className="inline-block h-6 w-6 rounded-full ring-2 ring-white bg-gray-200 flex items-center justify-center text-[10px] font-bold" title={att.name}>
+                                                                {att.name[0]}
+                                                            </div>
+                                                        ))
+                                                    ) : (
+                                                        <span className="text-xs text-gray-400">None</span>
+                                                    )}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="text-gray-600 text-sm max-w-[200px] truncate">
                                                 {item.description}
                                             </TableCell>
                                             <TableCell className="text-right">
@@ -312,31 +379,30 @@ export default function AdminPracticeAreasPage() {
 
             {/* Add/Edit Modal */}
             <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-                <DialogContent className="sm:max-w-[700px] h-[85vh] flex flex-col p-0 overflow-hidden">
+                <DialogContent className="sm:max-w-[850px] h-[90vh] flex flex-col p-0 overflow-hidden">
                     <DialogHeader className="px-6 py-4 border-b">
                         <DialogTitle>{currentArea ? 'Edit Service' : 'Add New Service'}</DialogTitle>
                         <DialogDescription>
-                            Configure the legal service offering details.
+                            Configure service details, content, and team members.
                         </DialogDescription>
                     </DialogHeader>
 
                     <div className="flex-1 overflow-y-auto p-6">
                         <form id="practice-form" onSubmit={handleSubmit} className="space-y-6">
                             {/* Main Info */}
-                            <div className="space-y-4">
-                                <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="space-y-4">
                                     <div className="space-y-2">
-                                        <Label htmlFor="title">Service Title</Label>
+                                        <Label htmlFor="title">Title</Label>
                                         <Input
                                             id="title"
                                             value={formData.title}
                                             onChange={handleTitleChange}
                                             required
-                                            placeholder="e.g. Litigation"
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="slug">Slug (URL)</Label>
+                                        <Label htmlFor="slug">Slug URL</Label>
                                         <Input
                                             id="slug"
                                             value={formData.slug}
@@ -344,63 +410,114 @@ export default function AdminPracticeAreasPage() {
                                             required
                                         />
                                     </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="subtitle">Subtitle</Label>
+                                        <Input
+                                            id="subtitle"
+                                            value={formData.subtitle}
+                                            onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
+                                        />
+                                    </div>
                                 </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="subtitle">Subtitle (On Detail Page)</Label>
-                                    <Input
-                                        id="subtitle"
-                                        value={formData.subtitle}
-                                        onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
-                                        placeholder="Brief impactful headline"
+                                <div className="space-y-4">
+                                    <FileUpload
+                                        label="Service Image / Icon"
+                                        accept="image/*"
+                                        value={formData.image}
+                                        onChange={(url) => setFormData({ ...formData, image: url })}
                                     />
                                 </div>
                             </div>
 
-                            {/* Image */}
-                            <div className="p-4 bg-gray-50 rounded-lg">
-                                <FileUpload
-                                    label="Service Image"
-                                    accept="image/*"
-                                    value={formData.image}
-                                    onChange={(url) => setFormData({ ...formData, image: url })}
+                            <div className="space-y-2">
+                                <Label htmlFor="description">Short Description (Card)</Label>
+                                <Textarea
+                                    id="description"
+                                    value={formData.description}
+                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                    rows={2}
                                 />
                             </div>
 
-                            {/* Details */}
-                            <div className="space-y-4">
+                            <hr className="border-gray-100" />
+                            <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                                <Briefcase className="w-4 h-4" /> Header & Contacts
+                            </h3>
+
+                            <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="description">Short Description (Card)</Label>
+                                    <Label htmlFor="quote">Feature Quote</Label>
                                     <Textarea
-                                        id="description"
-                                        value={formData.description}
-                                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                        id="quote"
+                                        value={formData.quote}
+                                        onChange={(e) => setFormData({ ...formData, quote: e.target.value })}
                                         rows={3}
-                                        placeholder="Shown on the main Practice Areas grid"
+                                        placeholder="e.g. Guiding corporate structures..."
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="details">Full Overview (Detail Page)</Label>
-                                    <Textarea
-                                        id="details"
-                                        value={formData.details}
-                                        onChange={(e) => setFormData({ ...formData, details: e.target.value })}
-                                        rows={6}
-                                        placeholder="Detailed explanation of the service..."
+                                    <Label htmlFor="contactEmail">Contact Email</Label>
+                                    <Input
+                                        id="contactEmail"
+                                        value={formData.contactEmail}
+                                        onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
+                                        placeholder="corporate@dejudom.com"
                                     />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="features">Key Features (One per line)</Label>
-                                    <Textarea
-                                        id="features"
-                                        value={formData.features}
-                                        onChange={(e) => setFormData({ ...formData, features: e.target.value })}
-                                        rows={5}
-                                        placeholder="Feature 1&#10;Feature 2&#10;Feature 3"
-                                        className="font-mono bg-gray-50"
-                                    />
-                                    <p className="text-xs text-gray-500">Enter each key capability on a new line.</p>
                                 </div>
                             </div>
+
+                            <div className="space-y-2">
+                                <Label>Primary Contacts (Select Attorneys)</Label>
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 p-3 bg-gray-50 rounded-lg border max-h-40 overflow-y-auto">
+                                    {allAttorneys.map(att => (
+                                        <label key={att.id} className="flex items-center gap-2 text-sm bg-white p-2 rounded border cursor-pointer hover:border-blue-400 transition-colors">
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.attorneyIDs.includes(att.id)}
+                                                onChange={() => toggleAttorney(att.id)}
+                                                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                            />
+                                            <span className="truncate">{att.name}</span>
+                                        </label>
+                                    ))}
+                                    {allAttorneys.length === 0 && (
+                                        <div className="col-span-3 text-center text-gray-400 text-sm py-2">
+                                            No attorneys available. Add them in Team Members page first.
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <hr className="border-gray-100" />
+                            <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                                <Users className="w-4 h-4" /> Content Body
+                            </h3>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="overview">Overview (Full Text)</Label>
+                                <Textarea
+                                    id="overview"
+                                    value={formData.overview}
+                                    onChange={(e) => setFormData({ ...formData, overview: e.target.value })}
+                                    rows={6}
+                                    placeholder="Full description text..."
+                                />
+                                <p className="text-xs text-gray-500">For 2 columns layout, separate paragraphs with double newlines.</p>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="experience">Experience (Bullet Points)</Label>
+                                <Textarea
+                                    id="experience"
+                                    value={formData.experience}
+                                    onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
+                                    rows={5}
+                                    className="font-mono bg-gray-50"
+                                    placeholder='["Project A...", "Project B..."]'
+                                />
+                                <p className="text-xs text-gray-500">Enter as JSON array ["Point 1", "Point 2"] or one per line.</p>
+                            </div>
+
                         </form>
                     </div>
 

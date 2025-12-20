@@ -32,7 +32,7 @@ export function AdminSidebar() {
         {
             category: t('admin.sidebar.contentManagement'),
             items: [
-                { name: t('admin.sidebar.teamMembers'), icon: Users, href: '/admin/team', count: 4 },
+                { name: t('admin.sidebar.teamMembers'), icon: Users, href: '/admin/attorneys', count: 4 },
                 { name: t('admin.sidebar.booksArticles'), icon: BookOpen, href: '/admin/ebooks', count: 3 },
                 { name: t('admin.sidebar.insightsNews'), icon: FileText, href: '/admin/insights', count: 3 },
                 { name: t('admin.sidebar.practiceAreas'), icon: Briefcase, href: '/admin/practice-areas', count: 5 },
